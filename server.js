@@ -11,11 +11,11 @@ const app = express();
 app.use(cors());
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname+'/index.html'))
+  res.sendFile(path.join(__dirname + '/index.html'))
 })
 
 app.get('/index', function (req, res) {
-  res.sendFile(path.join(__dirname+'/index.html'))
+  res.sendFile(path.join(__dirname + '/index.html'))
 })
 
 app.get('/:organisation/:repository', async (req, res, next) => {
@@ -23,8 +23,9 @@ app.get('/:organisation/:repository', async (req, res, next) => {
     const organisation = req.params.organisation
     const repository = req.params.organisation
 
-    const packageName = (req.query.package ? req.query.package : null)
+    const packageName = req.query.package ? req.query.package : null
     const limit = req.query.limit ? parseInt(req.query.limit) : 100
+    const after = req.query.after ? req.query.after : null
 
     let entryUrl = `https://github.com/${organisation}/${repository}/network/dependents`
 
@@ -37,9 +38,16 @@ app.get('/:organisation/:repository', async (req, res, next) => {
         throw Error(`Package with name '${packageName}' not found`)
       }
       entryUrl += "?package_id=" + packageId
+      if (after) {
+        entryUrl += "&dependents_after=" + after
+      }
+    } else {
+      if (after) {
+        entryUrl += "?dependents_after=" + after
+      }
     }
 
-    let dependents = await getDependents(entryUrl, limit)
+    let dependents = await getDependents(entryUrl, limit, after)
     const result = {
       countOfReturnedDependents: dependents.length,
       totalPackages: packagesInfo ? packagesInfo.totalPackagesCount : null,

@@ -11,6 +11,7 @@
     "cheerio": "^0.22.0",
     "cors": "^2.8.3",
     "express": "^4.15.3",
+    "pg": "^7.12.1",
     "request-promise-cache": "^2.0.1"
   },
   "license": "MIT"
