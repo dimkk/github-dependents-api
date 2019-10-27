@@ -1,3 +1,3 @@
 # Github Dependents API
 
-[https://github-dependants.glitch.me/](https://github-dependants.glitch.me/)
+[https://github-dependents-api.herokuapp.com](Try on Heroku)
