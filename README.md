@@ -1,3 +1,3 @@
 # Github Dependents API
 
-[https://github-dependents-api.herokuapp.com](Try on Heroku)
+## [Try on Heroku](https://github-dependents-api.herokuapp.com)
