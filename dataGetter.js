@@ -4,22 +4,29 @@ const getGithubPage = require('./getGithubPage.js');
 const { last } = require('lodash');
 const scrapePage = require('./scrapper.js').scrapePage
 const getPackages = require('./scrapper.js').getPackages
+const pack = require('./package.json')
 let dependents = []
 let isStopped = false
 let lastMessage = ""
+
 async function getCurrentDependents (){
   return new Promise(resolve => resolve(dependents)) 
+}
+
+function setMessage(text) {
+  lastMessage = `V${pack.version}: ${text}`
 }
 
 function stop (){
   isStopped = true
   dependents = []
-  lastMessage = "stopped and flushed"
+  setMessage("stopped and flushed")
   return true
 }
 
 function getLastMessage (){
-  return lastMessage
+  if (!lastMessage) setMessage("No messages yet")
+  return lastMessage 
 }
 // config = {
 //   user: 'postgres', // default process.env.PGUSER || process.env.USER
@@ -61,7 +68,7 @@ async function getDependents(url, limit_old, after, stars) {
       return scrapePage(response, stars)
     })
     dependents = data.dependents.concat(dependents)
-    lastMessage = `parsed deps - ${dependents.length}, out of ${limit}`
+    setMessage(`stored deps - ${dependents.length}, out of ${limit}`)
     console.log(lastMessage)
     // uncomment if you want DB caching, also auncomment and add connection string
     //await client.query(`INSERT INTO d_github_urls VALUES ('${nextPage}', DEFAULT, '${JSON.stringify(data.dependents)}')`)

@@ -43,7 +43,7 @@ app.get('/stop', async (req,res,next) => {
 
 app.get('/mess', async (req,res,next) => {
   try{
-    res.status(200).send(getLastMessage() || "No messages yet")
+    res.status(200).send(getLastMessage())
   } catch (err) {
     return next(err);
   }
