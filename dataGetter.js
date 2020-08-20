@@ -1,6 +1,7 @@
 const pg = require('pg');
 
-const getGithubPage = require('./getGithubPage.js')
+const getGithubPage = require('./getGithubPage.js');
+const { last } = require('lodash');
 const scrapePage = require('./scrapper.js').scrapePage
 const getPackages = require('./scrapper.js').getPackages
 let dependents = []
@@ -12,6 +13,8 @@ async function getCurrentDependents (){
 
 function stop (){
   isStopped = true
+  dependents = []
+  lastMessage = "stopped and flushed"
   return true
 }
 
