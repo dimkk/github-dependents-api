@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
+let dependents = []
 
-function scrapePage(response) {
+function scrapePage(response, starsLimit) {
   const $ = cheerio.load(response)
   const $dependants = $('#dependents')
 
@@ -28,10 +29,10 @@ function scrapePage(response) {
       nextPageUrl = paginationBtns.get(0).attribs.href
     }
   }
-
+  let limit
   // get dependents
   const numberOfDependentsOnPage = $dependants.find(".Box-row.d-flex.flex-items-center").length
-  let dependents = []
+  
   $dependants.find(".Box-row.d-flex.flex-items-center").map((index, elem) => {
     let repo = $('[data-hovercard-type=repository]', elem)[0].firstChild.data
     let org = $('[data-hovercard-type=user],[data-hovercard-type=organization]', elem)[0].firstChild.data
@@ -39,9 +40,11 @@ function scrapePage(response) {
     let stars = parseInt($('svg.octicon-star', elem)[0].nextSibling.data.trim())
     let forks = parseInt($('svg.octicon-repo-forked', elem)[0].nextSibling.data.trim())
     let isGhost = $('[alt="@ghost"]', elem).length > 0
-    dependents.push({
-      isGhost: isGhost,
-      avatarImage: avatarImage,
+    limit = parseInt($('#dependents > div.Box > div.Box-header.clearfix > div > div > a.btn-link.selected').text().replace(',', ''))
+    if (stars >= starsLimit)
+    dependents.unshift({
+      //isGhost: isGhost,
+      //avatarImage: avatarImage,
       org: org,
       repo: repo,
       stars: stars,
@@ -51,6 +54,7 @@ function scrapePage(response) {
   })
 
   return {
+    limit,
     prevPage: previousPageUrl,
     nextPage: nextPageUrl,
     dependents: dependents,
