@@ -1,9 +1,14 @@
-# Github Dependents API
+# Github tools
 
-## [Try on Heroku](https://gh-test-dep.herokuapp.com/)
+## [Try on Heroku](https://gh-test-dep.herokuapp.com/) **dontactually for now**
 
-- new features, including
-- ability to stop task
-- dirty clientside js
-- limit by stars
-- todo - multiple users 
+## Dependandant projects
+
+- [x] new features, including
+- [x] ability to stop task
+- [x] dirty clientside js
+- [x] limit by stars
+- [ ] multiple users
+
+## Fork explorer
+- [ ] TODO
